@@ -1,0 +1,24 @@
+
+public class Iyake {
+
+ public static void main(String[] args) throws java.io.IOException {
+	 int nums[] = {2, 2, 3, 2};
+	 if(nums.length==1){
+		    if(nums[0]==2){
+		      System.out.println(false);
+		    }else{
+		      System.out.println(true);
+		    }
+		  }
+		  if(nums.length==0)System.out.println(true);
+		  boolean prev2=false,prevprev2=false;
+		  for(int i=0;i<nums.length;i++){
+		    if(prev2&!prevprev2&&nums[i]!=2)System.out.println(false);
+		    prevprev2=prev2;
+		    prev2=nums[i]==2;
+		  }
+		  System.out.println(""+prev2+prevprev2);
+		  System.out.println(nums[nums.length-2]|==2|nums[nums.length-1]!=2);
+ }
+
+}

@@ -1,0 +1,10 @@
+
+public class Main {
+
+	public static void main(String[] args) throws java.io.IOException{
+		Reader sc= new Reader();
+		System.out.print("Enter number: ");
+		int n=sc.nextInt();
+	}
+
+}

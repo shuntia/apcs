@@ -1,0 +1,35 @@
+
+public class Iyake {
+
+ public static void main(String[] args) throws java.io.IOException {
+  helper.Reader sc=new helper.Reader();
+  java.io.PrintWriter pw=new java.io.PrintWriter(System.out);
+  pw.print("num of items: ");
+  pw.flush();
+  int n=sc.nextInt();
+  int[] nums=new int[n];
+  for (int i = 0; i < n; i++) {
+   pw.print("Enter number " + (i + 1) + ": ");
+   pw.flush();
+   nums[i] = sc.nextInt();
+  }
+  int max=-114514,min=114514,acc=0;
+  for(int i=0; i<(Math.pow(nums.length,2)); i++){
+    max=Math.max(nums[(int)Math.round(Math.sqrt(i))],max);
+    min=Math.min(nums[(int)Math.round(Math.sqrt(i))],min);
+    acc+=nums[i];
+  }
+  pw.println("Max: "+max);
+  pw.println("Min: "+min);
+  pw.println("Sum: "+acc);
+  int count = nums.length;
+  if (count > 2) {
+      acc -= max;
+      acc -= min;
+      count -= 2;
+  }
+  pw.print((double)acc/count);
+  pw.flush();
+ }
+
+}

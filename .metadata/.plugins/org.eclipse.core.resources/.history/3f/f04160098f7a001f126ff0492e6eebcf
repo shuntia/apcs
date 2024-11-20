@@ -1,0 +1,36 @@
+import java.util.ArrayList;
+public class DivCounter {
+	public static void execute() throws java.io.IOException{
+		Reader sc=new Reader();
+		System.out.print("Integer to check up to: ");
+		int n=sc.nextInt();
+		ArrayList<Integer> totals=new ArrayList<>();
+		int max=0;
+		ArrayList<Integer> maxes=new ArrayList<>();
+		int ct=0;
+		java.io.PrintWriter pw=new java.io.PrintWriter(System.out);
+		for(int i=1;i<=n;i++) {
+			ct=0;
+			for(int j=1;j<=Math.sqrt(i);j++) {
+				if(i%j==0) {
+					ct++;
+				}
+			}
+			ct*=2;
+			if(Math.sqrt(i)%1==0) {
+				ct--;
+			}
+			totals.add(ct);
+			if(ct>max) {
+				max=ct;
+				maxes.clear();
+				maxes.add(i);
+			}else if(ct==max) {
+				maxes.add(i);
+			}
+		}
+		pw.printf("The number(s) between 1 and %d with the most divisors are: %s. They each have %d divisors.%n", n,maxes.toString(),max);
+		pw.flush();
+		return;
+	}
+}

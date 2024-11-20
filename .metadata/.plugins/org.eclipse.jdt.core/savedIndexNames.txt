@@ -1,0 +1,21 @@
+INDEX VERSION 1.134+C:\Users\shunt\apcs\.metadata\.plugins\org.eclipse.jdt.core
+2138745591.index
+1200804385.index
+1865797976.index
+1071801827.index
+3363086857.index
+3278255271.index
+408514996.index
+2434124769.index
+457614661.index
+1145509765.index
+3777769571.index
+2531016075.index
+3803894794.index
+792016096.index
+3848836394.index
+2922686943.index
+2523543944.index
+693620575.index
+899880575.index
+1536869842.index

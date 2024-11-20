@@ -1,0 +1,66 @@
+import java.util.ArrayList;
+public class Main {
+
+	public static void main(String[] args) throws java.io.IOException{
+		Reader sc= new Reader();
+		System.out.print("Save mem?[y/N]");
+		Boolean savemem=sc.readLine().strip().equals("y");
+		if(savemem) {
+			System.out.println("Running with low memory mode...");
+		}
+		System.out.print("Enter number: ");
+		int n=sc.nextInt();
+		sc.close();
+		if(n>=1000000&!savemem) {
+			System.out.println("This program checks every number before it outputs. This may take a while...");
+		}
+		int max=0;
+		int max_idx=-1;
+		ArrayList<Long> threeN=new ArrayList<>();
+		ArrayList<ArrayList<Long>> totals=new ArrayList<>();
+		java.io.PrintWriter pr=new java.io.PrintWriter(System.out);
+		for(int i=1;i<n+1;i++) {
+			threeN=threeNPlusOne(i);
+			
+			if(max<threeN.size()) {
+				max=threeN.size();
+				max_idx=i;
+			};
+			if(!savemem) {
+				try {
+					totals.add(threeN);
+				}catch(java.lang.OutOfMemoryError e) {
+					System.err.println("Java failed to grow the Java heap space! The number is likely to be too large to compute!");
+					System.err.println(e);
+					System.err.flush();
+					return;
+				}
+			}else {
+				pr.printf("3n+1 for %d: ",i+1);
+				pr.print(threeN);
+			}
+		}
+		if(!savemem) {
+			for(int i=0;i<totals.size();i++) {
+				pr.printf("3n+1 for %d: ",i+1);
+				pr.print(totals.get(i));
+				pr.println(i==max_idx-1?"<---Winner!":"");
+			}
+		}
+		pr.flush();
+		pr.close();
+		System.out.printf("Winner is %d with %d steps!%n",max_idx-1, max);
+	}
+	public static ArrayList<Long> threeNPlusOne(long x) {
+		ArrayList<Long> ret=new ArrayList<>();
+		while(x!=1) {
+			ret.add(x);
+			if(x%2==0) {
+				x/=2;
+			}else {
+				x=x*3+1;
+			}
+		}
+		return ret;
+	}
+}

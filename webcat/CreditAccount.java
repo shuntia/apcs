@@ -27,15 +27,18 @@ public class CreditAccount {
 		this.balance = balance;
 		this.annualInterestRate = annualInterestRate;
 	}
+
+	private double round(double value, double precision){
+		return Math.round(value*precision)/precision;
+	}
 	
 	public double calculateMinimumMonthlyPayment() {
 		//This method should return a value of either $25 or twice the value
 		//of the interest amount for the month (whichever is greater).
 		//If this amount is greater than the remaining balance, then the 
 		//remaining balance should be returned.
-		return Math.max(25.0, calculateInterestAmountForMonth() * 2);
+		return Math.min(Math.max(25.0, round(calculateInterestAmountForMonth() * 2.0, 2)), balance);
 	}
-	
 	public int howManyMonthsUsingConstantPayment(double payment) {
 		//The parameter payment should be greater than the minimum monthly
 		//payment. If it is not, throw an IllegalArgumentException.
@@ -47,14 +50,17 @@ public class CreditAccount {
 		//interest rate is 12%, then a payment of $75 would result in 
 		//a balance of 5634 + 56.34 - 75 = 5615.34 for the next month.
 		//(This is a simplified model of how payments are actually applied.)
-		if(payment<=calculateMinimumMonthlyPayment()) {
+		if(payment<calculateMinimumMonthlyPayment()) {
 			throw new IllegalArgumentException("Payment is too low");
 		}
-		int months = 0;
-		while(balance>0) {
+		double tmp=balance;
+		int months=0;
+		while(balance>0){
 			months++;
-			balance = balance + balance * annualInterestRate / 12.0 - payment;
+			balance += calculateInterestAmountForMonth();
+			balance -= payment;
 		}
+		balance=tmp;
 		return months;
 	}
 	
@@ -98,7 +104,7 @@ public class CreditAccount {
 	}
 	
 	public double getInterestRate() {
-		return annualInterestRate;
+		return Math.round(annualInterestRate*100.0)/100.0;
 	}
 	
 	public void setInterestRate(double interestRate) {

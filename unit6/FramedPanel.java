@@ -34,6 +34,8 @@ public class FramedPanel extends JPanel{
                 gr.fillRect(0, 0, getWidth(), getHeight());
                 gr.setColor(Color.white);
                 gr.fillRect(offset / 2, offset / 2, getWidth() - offset, getHeight() - offset);
+                gr.setColor(Color.black);
+                gr.drawRect(offset / 2, offset / 2, getWidth() - offset, getHeight() - offset);
             }
         };
         this.add(centerContainer, BorderLayout.CENTER);

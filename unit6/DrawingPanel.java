@@ -9,8 +9,6 @@ public class DrawingPanel extends JPanel{
     public DrawingPanel(){
         super();
         DraggingDrawingPanelListener listener=new DraggingDrawingPanelListener(this);
-        this.addMouseListener(listener);
-        this.addMouseMotionListener(listener);
     }
     public void paintComponent(java.awt.Graphics g){
         super.paintComponent(g);

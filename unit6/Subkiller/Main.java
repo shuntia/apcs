@@ -6,17 +6,18 @@ public class Main {
     public static JFrame window = new JFrame("Sub Killer Game");
     public static JPanel content = new JPanel();
     public static Panel mainPanel = new Panel();
-    public static JMenuBar menuBar=new JMenuBar();
-    public static JMenu subKillerMenu=new JMenu();
-    public static JMenu optionsMenu=new JMenu();
-    public static JMenuItem about=new JMenuItem("About");
-    public static JMenuItem quit=new JMenuItem("Quit");
-    public static JMenuItem restart=new JMenuItem("Restart");
+    public static JMenuBar menuBar = new JMenuBar();
+    public static JMenu subKillerMenu = new JMenu("Sub Killer");
+    public static JMenu optionsMenu = new JMenu("Options");
+    public static JMenuItem about = new JMenuItem("About");
+    public static JMenuItem quit = new JMenuItem("Quit");
+    public static JMenuItem restart = new JMenuItem("Restart");
+
     public static void main(String[] args) {
         subKillerMenu.add(about);
         subKillerMenu.addSeparator();
         subKillerMenu.add(quit);
-        optionsMenu.add(quit);
+        optionsMenu.add(restart);
         menuBar.add(subKillerMenu);
         menuBar.add(optionsMenu);
         window.setJMenuBar(menuBar);
@@ -26,8 +27,8 @@ public class Main {
         window.setJMenuBar(menuBar);
         window.setContentPane(content);
         window.setSize(600, 480);
-        window.setLocation(100,100);
-        window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        window.setLocation(100, 100);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);  // User can't change the window's size.
         window.setVisible(true);
     }

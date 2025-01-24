@@ -25,6 +25,7 @@ class Bomb {
                     // enters the "isExploding" state.
                 sub.isExploding = true;
                 sub.explosionFrameNumber = 1;
+                Main.scorePanel.setScore(Main.scorePanel.getScore()+1);
                 isFalling = false;  // Bomb reappears on the boat.
             }
             else {

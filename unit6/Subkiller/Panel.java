@@ -6,6 +6,7 @@ public class Panel extends JPanel {
     Boat boat;
     Bomb bomb;
     Submarine sub;
+    int subspeed=1;
     public Panel() {
         setBackground( new Color(0,200,0) ); 
         Listener listener = new Listener(this);
@@ -40,8 +41,18 @@ public class Panel extends JPanel {
         g.drawRect(2,2,getWidth()-5,getHeight()-5);
 
         boat.draw(g); //**Like a Rectangle, a Boat object knows how to draw itself
-        sub.draw(g);
+        for (int i = 0; i < subspeed; i++) {
+            sub.draw(g);
+        }
         bomb.draw(g);
-
     } // end paintComponent()
+    public void setSubSpeed(int speed) {
+        if(speed<=0){
+            throw new IllegalArgumentException("Speed must be greater than 0");
+        }
+        subspeed = speed;
+    }
+    public int getSubSpeed() {
+        return subspeed;
+    }
 }

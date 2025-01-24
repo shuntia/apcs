@@ -1,8 +1,11 @@
 
 import java.awt.event.*;
+import javax.swing.JSlider;
 import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class Listener implements ActionListener, KeyListener, MouseListener, FocusListener{
+public class Listener implements ActionListener, KeyListener, MouseListener, FocusListener, ChangeListener{
     Panel p;
     Timer timer;
     public Listener(Panel p){
@@ -12,13 +15,16 @@ public class Listener implements ActionListener, KeyListener, MouseListener, Foc
         p.addKeyListener(this);
         timer=new Timer(30, this);
         timer.start();
+        Main.scorePanel.getDifficultySlider().addChangeListener(this);
     }
     @Override
     public void actionPerformed(ActionEvent evt) {
         if (p.boat != null) {
             p.boat.updateForNewFrame();
             p.bomb.updateForNewFrame();
-            p.sub.updateForNewFrame();
+            for (int i = 0; i < p.getSubSpeed(); i++) {
+                p.sub.updateForNewFrame();
+            }
         }
         p.repaint();
     }
@@ -31,23 +37,19 @@ public class Listener implements ActionListener, KeyListener, MouseListener, Foc
     public void keyPressed(KeyEvent evt) {
         int code = evt.getKeyCode();  // Which key was pressed?
         switch (code) {
-            case KeyEvent.VK_LEFT:
-                // Move the boat left.  (If this moves the boat out of the frame, its
+            case KeyEvent.VK_LEFT -> // Move the boat left.  (If this moves the boat out of the frame, its
                 // position will be adjusted in the boat.updateForNewFrame() method.)
                 p.boat.centerX -= 15;
-                break;
-            case KeyEvent.VK_RIGHT:  
-                // Move the boat right.  (If this moves boat out of the frame, its
+            case KeyEvent.VK_RIGHT -> // Move the boat right.  (If this moves boat out of the frame, its
                 // position will be adjusted in the boat.updateForNewFrame() method.)
                 p.boat.centerX += 15;
-                break;
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_DOWN -> {
                 // Start the bomb falling, if it is not already falling.
                 if ( p.bomb.isFalling == false )
                     p.bomb.isFalling = true;
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 
@@ -86,6 +88,16 @@ public class Listener implements ActionListener, KeyListener, MouseListener, Foc
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if(e.getSource() instanceof JSlider source){
+            if(!source.getValueIsAdjusting()){
+                int difficultylevel=source.getValue();
+                p.setSubSpeed(difficultylevel);
+            }
+        }
     }
     
 }

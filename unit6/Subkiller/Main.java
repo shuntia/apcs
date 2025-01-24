@@ -6,10 +6,24 @@ public class Main {
     public static JFrame window = new JFrame("Sub Killer Game");
     public static JPanel content = new JPanel();
     public static Panel mainPanel = new Panel();
+    public static JMenuBar menuBar=new JMenuBar();
+    public static JMenu subKillerMenu=new JMenu();
+    public static JMenu optionsMenu=new JMenu();
+    public static JMenuItem about=new JMenuItem("About");
+    public static JMenuItem quit=new JMenuItem("Quit");
+    public static JMenuItem restart=new JMenuItem("Restart");
     public static void main(String[] args) {
+        subKillerMenu.add(about);
+        subKillerMenu.addSeparator();
+        subKillerMenu.add(quit);
+        optionsMenu.add(quit);
+        menuBar.add(subKillerMenu);
+        menuBar.add(optionsMenu);
+        window.setJMenuBar(menuBar);
         content.setLayout(new BorderLayout());
         content.add(mainPanel, BorderLayout.CENTER);
         content.add(scorePanel, BorderLayout.SOUTH);
+        window.setJMenuBar(menuBar);
         window.setContentPane(content);
         window.setSize(600, 480);
         window.setLocation(100,100);

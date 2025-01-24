@@ -124,10 +124,12 @@ public class KeyboardAndFocusDemo extends JPanel implements KeyListener, FocusLi
 
     @Override
     public void focusGained(FocusEvent e) {
+        repaint();
     }
 
     @Override
     public void focusLost(FocusEvent e) {
+        repaint();
     }
 
     class Square{

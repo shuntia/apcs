@@ -5,7 +5,8 @@ public class Main {
     public static ScorePanel scorePanel = new ScorePanel();
     public static JFrame window = new JFrame("Sub Killer Game");
     public static JPanel content = new JPanel();
-    public static Panel mainPanel = new Panel();
+    public static Listener l=new Listener();
+    public static Panel mainPanel = new Panel(l);
     public static JMenuBar menuBar = new JMenuBar();
     public static JMenu subKillerMenu = new JMenu("Sub Killer");
     public static JMenu optionsMenu = new JMenu("Options");
@@ -20,6 +21,9 @@ public class Main {
         optionsMenu.add(restart);
         menuBar.add(subKillerMenu);
         menuBar.add(optionsMenu);
+        about.addActionListener(l);
+        quit.addActionListener(l);
+        restart.addActionListener(l);
         window.setJMenuBar(menuBar);
         content.setLayout(new BorderLayout());
         content.add(mainPanel, BorderLayout.CENTER);

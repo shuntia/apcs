@@ -11,6 +11,10 @@ public class Panel extends JPanel {
         setBackground( new Color(0,200,0) ); 
         Listener listener = new Listener(this);
     }
+    public Panel(Listener l){
+        setBackground(new Color(0,200,0));
+        l.attachToPanel(this);
+    }
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);  // Fill panel with background color, green.
@@ -41,18 +45,21 @@ public class Panel extends JPanel {
         g.drawRect(2,2,getWidth()-5,getHeight()-5);
 
         boat.draw(g); //**Like a Rectangle, a Boat object knows how to draw itself
-        for (int i = 0; i < subspeed; i++) {
-            sub.draw(g);
-        }
+        sub.draw(g);
         bomb.draw(g);
+
     } // end paintComponent()
-    public void setSubSpeed(int speed) {
-        if(speed<=0){
-            throw new IllegalArgumentException("Speed must be greater than 0");
-        }
-        subspeed = speed;
+    public void restart(){
+        boat=null;
+        sub=null;
+        bomb=null;
+        Main.scorePanel.setScore(0);
+        Main.scorePanel.getDifficultySlider().setValue(1);
     }
-    public int getSubSpeed() {
+    public int getSubSpeed(){
         return subspeed;
+    }
+    public void setSubSpeed(int s){
+        subspeed=s;
     }
 }

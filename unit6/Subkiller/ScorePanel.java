@@ -26,6 +26,7 @@ public class ScorePanel extends JPanel{
     public void setScore(int score){
         this.score=score;
         scoreLabel.setText("Score: "+score);
+        repaint();
     }
     public int getScore(){
         return score;

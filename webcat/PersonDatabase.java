@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
 public class PersonDatabase {
 
 	/**
@@ -32,11 +31,46 @@ public class PersonDatabase {
 	private int size;
 
 	public static void main(String[] args) {
-
+		java.util.Scanner scanner = new java.util.Scanner(System.in);
+		PersonDatabase db = new PersonDatabase();
+		while (true) {
+			System.out.print("Enter a command: ");
+			String command = scanner.nextLine();
+			if (command.equals("exit")) {
+				break;
+			} else if (command.equals("print")) {
+				db.printBoth();
+			} else if (command.startsWith("add ")) {
+				String[] parts = command.split(" ");
+				String firstName = parts[1];
+				String lastName = parts[2];
+				int birthDay = Integer.parseInt(parts[3]);
+				int birthMonth = Integer.parseInt(parts[4]);
+				int birthYear = Integer.parseInt(parts[5]);
+				Person p = new Person(firstName, lastName, birthDay, birthMonth, birthYear);
+				db.put(p);
+			} else if (command.startsWith("find ")) {
+				String[] parts = command.split(" ");
+				if (parts.length == 3) {
+					String firstName = parts[1];
+					String lastName = parts[2];
+					List<Person> result = db.find(firstName, lastName);
+					System.out.println(result);
+				} else if (parts.length == 5) {
+					int birthDay = Integer.parseInt(parts[1]);
+					int birthMonth = Integer.parseInt(parts[2]);
+					int birthYear = Integer.parseInt(parts[3]);
+					List<Person> result = db.find(birthDay, birthMonth, birthYear);
+					System.out.println(result);
+				}
+			}
+		}
+		scanner.close();	
 	}
 
 	public void printBoth() {
 		printTree(rootOfNameTree, 0);
+		System.out.println("-----------------");
 		printTree(rootOfBirthDateTree, 0);
 	}
 
@@ -100,38 +134,26 @@ public class PersonDatabase {
 		if (root == null) {
 			return false;
 		}
-		if (first.apply(p, root.item) > 0) {
+		if (root.item.equals(p)) {
+			return false;
+		}
+
+		if(first.apply(p, root.item) > 0) {
 			if (root.right == null) {
 				root.right = new Node(p);
+				return true;
 			} else {
 				return compPut(p, root.right, first, second);
 			}
-		} else if (first.apply(p, root.item) == 0) {
-			if (second.apply(p, root.item) > 0) {
-				if (root.right == null) {
-					root.right = new Node(p);
-					return true;
-				} else {
-					return compPut(p, root.right, first, second);
-				}
-			} else {
-				if (root.left == null) {
-					root.left = new Node(p);
-				} else {
-					return compPut(p, root.left, first, second);
-				}
-			}
-		} else {
-			if (root.item.equals(p))
-				return false;
-
+		} else  {
 			if (root.left == null) {
 				root.left = new Node(p);
+				return true;
 			} else {
 				return compPut(p, root.left, first, second);
 			}
 		}
-		return true;
+		
 	}
 
 	private static int compName(Person l, Person r) {
@@ -161,21 +183,28 @@ public class PersonDatabase {
 	 * @return a list of Person objects (possibly empty)
 	 */
 	public List<Person> find(String firstName, String lastName) {
+		return findInner(rootOfNameTree, firstName, lastName);
+	}
+public List<Person> findInner(Node root, String firstName, String lastName) {
 		ArrayList<Person> acc = new ArrayList<>();
 		Person p = new Person(firstName, lastName, 0, 0, 0);
-		Node current = rootOfNameTree;
-		while (true) {
-			if (current == null) {
-				break;
-			}
-			if (current.item.firstName.equals(firstName) && current.item.lastName.equals(lastName))
-				acc.add(current.item);
-			if (compName(p, current.item) < 0) {
-				current = current.left;
-			} else {
-				current = current.right;
-			}
+		Node current = root;
+		if(current == null) {
+			return acc;
 		}
+			if (current.item.firstName.equals(firstName) && current.item.lastName.equals(lastName)) {
+				acc.add(current.item);
+			}
+			if (compName(p, current.item) > 0) {
+				acc.addAll(findInner(current.right, firstName, lastName));
+			} else if (compName(p, current.item) < 0) {
+				if (current.left != null && compName(p, current.left.item) == 0) {
+					acc.addAll(findInner(current.left, firstName, lastName));
+				}
+			}else{
+				acc.addAll(findInner(current.left, firstName, lastName));
+				acc.addAll(findInner(current.right, firstName, lastName));
+			}
 		return acc;
 	}
 
@@ -189,26 +218,33 @@ public class PersonDatabase {
 	 * @return a list of Person objects (possibly empty)
 	 */
 	public List<Person> find(int birthDay, int birthMonth, int birthYear) {
-		ArrayList<Person> acc = new ArrayList<>();
-		Person p = new Person("", "", birthDay, birthMonth, birthYear);
-		Node current = this.rootOfBirthDateTree;
-		while (true) {
-			if (current == null) {
-				break;
-			}
-			if (current.item.birthDay == birthDay && current.item.birthMonth == birthMonth
-					&& current.item.birthYear == birthYear)
-				acc.add(current.item);
-			if (compBday(p, current.item) < 0) {
-				current = current.left;
-			} else {
-				current = current.right;
-			}
-		}
-		return acc;
+		return findInner(rootOfBirthDateTree, birthDay, birthMonth, birthYear);
+		
 
 	}
 
+public List<Person> findInner(Node root,int birthDay, int birthMonth, int birthYear) {
+		ArrayList<Person> acc = new ArrayList<>();
+		Person p = new Person("", "", birthDay, birthMonth, birthYear);
+		Node current = root;
+		if(current == null) {
+			return acc;
+		}
+			if (current.item.birthDay == birthDay && current.item.birthMonth == birthMonth
+					&& current.item.birthYear == birthYear)
+				acc.add(current.item);
+			if(compBday(p, current.item) > 0) {
+				acc.addAll(findInner(current.right, birthDay, birthMonth, birthYear));
+				
+			} else {
+				if(current.right!=null&&compBday(p,current.right.item) == 0) {
+					acc.addAll(findInner(current.right, birthDay, birthMonth, birthYear));
+				}
+				acc.addAll(findInner(current.left, birthDay, birthMonth, birthYear));
+			}
+		return acc;
+
+	}
 	// ***** For testing purposes
 	public Node getNameRoot() {
 		return rootOfNameTree;

@@ -324,6 +324,6 @@ public class PersonDatabaseTest {
 	}
 
 	static void assertEquals(Object a, Object b) {
-		System.out.println(a.equals(b) ? "a ne b" : "Ok");
+		System.out.println(a.equals(b) ? a+" ne "+b : "Ok");
 	}
 }

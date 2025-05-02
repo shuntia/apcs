@@ -7,7 +7,7 @@ public abstract class Enemy extends GameCharacter {
 	private int experienceGiven;
 		
 	public Enemy(String name, Image image, int hp, int mp, int attackPower, int attackAccuracy, int experienceGiven) {
-		super(name, image, hp, mp, attackPower, attackAccuracy);
+		super(name, image, hp, mp, attackPower, attackAccuracy, new BareFistBehavior());
 		this.experienceGiven = experienceGiven;
 	}
 
